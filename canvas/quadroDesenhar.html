@@ -1,0 +1,64 @@
+<canvas style="margin: 80px 150px 0px 170px;" width="1200" height="800"></canvas>
+
+<label>Selecione a cor</label> 
+<input type="color">
+
+<script>
+    var paleta = document.querySelector('input');
+    var tela = document.querySelector('canvas');
+    var pincel = tela.getContext('2d');
+
+    pincel.fillStyle = 'lightgrey';
+    pincel.fillRect(0, 0, 1200, 800);
+
+    var raio = 10;
+    var desenha = false;
+
+    function desenhaCirculo(evento) {
+
+        var x = evento.pageX - tela.offsetLeft;
+        var y = evento.pageY - tela.offsetTop;
+
+        if (evento.shiftKey && evento.altKey) {
+
+            alert('Só aperte uma tecla por vez!');
+
+        } else if(evento.shiftKey && raio + 10 <= 100) {
+            raio = raio + 10;
+
+        } else if(evento.altKey && raio - 5 >= 10) {
+            raio = raio - 5;
+
+        }
+
+        if(desenha) {
+
+            pincel.fillStyle = paleta.value; // sempre pega o valor atual da paleta!
+            pincel.beginPath();
+            pincel.arc(x, y, raio, 0, 2 * 3.14);
+            pincel.fill();
+        }
+        console.log(x + ',' + y);
+    }
+
+    tela.onmousemove = desenhaCirculo;
+
+    tela.onmousedown = function() {
+
+        desenha = true;
+    }
+
+    // atribuindo diretamente a função anônima
+     tela.onmouseup = function() {
+
+        desenha = false;
+    }
+
+    function naoExibeMenu() {
+
+        return false;
+    }
+
+    tela.oncontextmenu = naoExibeMenu;
+
+</script>
